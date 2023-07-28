@@ -8,7 +8,7 @@ import {
      NotFoundException,
         } from "@nestjs/common";
 
-import { JwtGuard } from "../auth/guard/"
+import { JwtGuard } from "../auth/guard"
 
 import  { User } from '@prisma/client'
 
