@@ -12,9 +12,8 @@ model user {
   FirstName String?
   LastName  String?
   email     String   @unique(map: "User_email_key")
-  role      String?
-  isAdmin   Boolean?
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+  roles     String   @default("GUEST")
 }

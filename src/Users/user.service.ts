@@ -1,7 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import { prismaService } from "src/prisma/prisma.service";
-import { UserDto } from "./dto";
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { prismaService } from "src/prisma/prisma.service";;
 import { NotFoundException } from "@nestjs/common";
+import { User } from "@prisma/client";
 
 @Injectable()
 export class UserService 
@@ -10,7 +10,13 @@ export class UserService
     (   private prisma : prismaService, 
     ) {} 
 
-    async update(id: number, user: UserDto) {
+    async update(id: number, user: User) {
+
+      if (!user.FirstName || !user.LastName) {
+        throw new BadRequestException(
+          `Missing required fields (FirstName, LastName).`);
+      }
+      
       try {
         const updatedUser = await this.prisma.user.update({
           where: { id }, 
@@ -18,7 +24,6 @@ export class UserService
           {
             FirstName: user.FirstName, 
             LastName: user.LastName, 
-            role: user.role,
           }
         });
     
@@ -28,7 +33,7 @@ export class UserService
     
         return updatedUser;
       } catch (error) {
-        // Handle errors appropriately
+        
         console.error('Error updating user:', error);
         throw error;
       }
